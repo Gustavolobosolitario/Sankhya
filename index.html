@@ -654,67 +654,90 @@
         </div>
 
         <div class="video-box">
-          <!-- Para vídeo do YouTube, use qualquer formato:
-               https://youtu.be/ID_DO_VIDEO
-               https://www.youtube.com/watch?v=ID_DO_VIDEO
-               https://www.youtube.com/embed/ID_DO_VIDEO
-               Para vídeo local, use: videos/nome-do-video.mp4 -->
-          <iframe
-            id="videoFrame"
-            title="Vídeo explicativo"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
+  <!-- Para vídeo do YouTube, use qualquer formato:
+       https://youtu.be/ID_DO_VIDEO
+       https://www.youtube.com/watch?v=ID_DO_VIDEO
+       https://www.youtube.com/embed/ID_DO_VIDEO
 
-          <video id="videoLocal" controls></video>
+       Para vídeo local, use:
+       videos/nome-do-video.mp4
+  -->
 
-          <div class="video-placeholder" id="videoPlaceholder">
-            <div class="play">▶</div>
-            <h3>Vídeo explicativo do fluxo</h3>
-            <p>Substitua o campo <b>videoUrl</b> no JavaScript pelo link do vídeo deste treinamento.</p>
-          </div>
-        </div>
+  <iframe
+    id="videoFrame"
+    title="Vídeo explicativo"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
 
-        <div class="resource-actions" id="resourceActions">
-          <h3 id="resourceTitle">Material de apoio</h3>
-          <p id="resourceDescription"></p>
-          <a class="pdf-button" id="pdfButton" href="#" target="_blank" rel="noopener">
-            📄 Abrir Manual Corporativo em PDF
-          </a>
-          <div class="pdf-note">
-            Para funcionar no GitHub Pages, envie o arquivo PDF para a mesma pasta do <b>index.html</b> com o nome <b>MANUAL CORPORATIVO.pdf</b>.
-          </div>
-        </div>
+  <video id="videoLocal" controls></video>
 
-        <div class="details">
-          <div class="info-grid">
-            <div class="info">
-              <small>Caminho de pesquisa</small>
-              <b id="path"></b>
-            </div>
-            <div class="info">
-              <small>Evento / Regra</small>
-              <b id="event"></b>
-            </div>
-            <div class="info">
-              <small>Perfil indicado</small>
-              <b id="profile"></b>
-            </div>
-          </div>
+  <div class="video-placeholder" id="videoPlaceholder">
+    <div class="play">▶</div>
+    <h3>Vídeo explicativo do fluxo</h3>
+    <p>
+      Quando este treinamento possuir vídeo, ele será exibido aqui.
+      Para o Manual Corporativo, utilize o botão abaixo para abrir o PDF.
+    </p>
+  </div>
+</div>
 
-          <h3 class="section-title">📌 Passo a passo</h3>
-          <div class="steps" id="steps"></div>
+<div class="resource-actions" id="resourceActions" style="display: none;">
+  <h3 id="resourceTitle">📄 Material de apoio</h3>
 
-          <div class="attention" id="attention"></div>
+  <p id="resourceDescription">
+    Consulte o manual completo com o passo a passo por tela.
+  </p>
 
-          <div class="footer-actions">
-            <button class="action" type="button" onclick="markAsDone()">Marcar como estudado</button>
-            <button class="action secondary" type="button" onclick="window.print()">Imprimir passo a passo</button>
-          </div>
-        </div>
-      </section>
-    </section>
-  </main>
+  <a
+    class="pdf-button"
+    id="pdfButton"
+    href="./MANUAL%20CORPORATIVO.pdf"
+    target="_blank"
+    rel="noopener">
+    📄 Abrir Manual Corporativo em PDF
+  </a>
+
+  <div class="pdf-note">
+    Para funcionar no GitHub Pages, envie o arquivo PDF para a mesma pasta do
+    <b>index.html</b> com o nome <b>MANUAL CORPORATIVO.pdf</b>.
+  </div>
+</div>
+
+<div class="details">
+  <div class="info-grid">
+    <div class="info">
+      <small>Caminho de pesquisa</small>
+      <b id="path"></b>
+    </div>
+
+    <div class="info">
+      <small>Evento / Regra</small>
+      <b id="event"></b>
+    </div>
+
+    <div class="info">
+      <small>Perfil indicado</small>
+      <b id="profile"></b>
+    </div>
+  </div>
+
+  <h3 class="section-title">📌 Passo a passo</h3>
+  <div class="steps" id="steps"></div>
+
+  <div class="attention" id="attention"></div>
+
+  <div class="footer-actions">
+    <button class="action" type="button" onclick="markAsDone()">
+      Marcar como estudado
+    </button>
+
+    <button class="action secondary" type="button" onclick="window.print()">
+      Imprimir passo a passo
+    </button>
+  </div>
+</div>
+</section> </section> </main>
 
   <div class="toast" id="toast">Treinamento marcado como estudado.</div>
 
@@ -847,27 +870,44 @@
         attention: 'Atenção: mantenha evidências da negociação e registre observações importantes para garantir rastreabilidade e governança.'
             },
       {
-        id: 'manual-corporativo',
-        icon: '📄',
-        title: 'Manual Corporativo',
-        subtitle: 'Manual em PDF com o passo a passo por tela para apoio aos usuários.',
-        badge: 'PDF Corporativo',
-        path: 'Manual Corporativo PDF',
-        event: 'Material de apoio',
-        profile: 'Todos os usuários',
-        videoUrl: '',
-        pdfUrl: 'MANUAL%20CORPORATIVO.pdf',
-        keywords: 'manual corporativo pdf passo a passo tela conteúdo apoio sankhya',
-        steps: [
-          ['Acesse o manual', 'Clique no botão Abrir Manual Corporativo em PDF para visualizar o material completo.'],
-          ['Consulte por processo', 'Utilize o índice ou a busca do navegador/PDF para localizar a tela ou rotina desejada.'],
-          ['Siga o passo a passo por tela', 'Acompanhe as orientações conforme o processo que você precisa executar no Sankhya.'],
-          ['Valide as informações antes de salvar', 'Confira empresa, centro de resultado, natureza, parceiro, itens, valores e observações.'],
-          ['Em caso de dúvida', 'Compare a tela do sistema com o manual e acione o responsável pelo suporte interno se necessário.']
-        ],
-        attention: 'Atenção: o link local file:///C:/Users/User/Downloads/MANUAL CORPORATIVO.pdf funciona apenas no seu computador. Para publicar no GitHub Pages, coloque o PDF na mesma pasta do HTML e mantenha o nome MANUAL CORPORATIVO.pdf.'
-      }
-    ];
+    id: 'manual-corporativo',
+    icon: '📖',
+    title: 'Manual Corporativo',
+    subtitle: 'Manual completo com o passo a passo por tela do sistema Sankhya.',
+    badge: 'Manual PDF',
+    path: 'Material de Apoio',
+    event: 'Documentação Corporativa',
+    profile: 'Todos os Usuários',
+    videoUrl: '',
+    pdfUrl: './MANUAL%20CORPORATIVO.pdf',
+
+    keywords: `
+      manual corporativo
+      pdf
+      treinamento
+      passo a passo
+      sankhya
+      documentação
+      material de apoio
+      usuário
+    `,
+
+    steps: [
+      ['Abrir o Manual', 'Clique no botão "Abrir Manual Corporativo" para acessar o documento completo.'],
+
+      ['Localizar o Processo', 'Utilize o índice do PDF ou a busca (CTRL + F) para encontrar a rotina desejada.'],
+
+      ['Consultar o Passo a Passo', 'Siga as orientações detalhadas apresentadas para cada tela do sistema.'],
+
+      ['Executar a Operação', 'Realize o procedimento no Sankhya conforme demonstrado no manual.'],
+
+      ['Validar os Dados', 'Antes de salvar, confira informações como empresa, parceiro, centro de resultado, natureza, valores e observações.'],
+
+      ['Solicitar Apoio', 'Caso ainda exista alguma dúvida, entre em contato com a equipe responsável pelo suporte interno.']
+    ],
+
+    attention: 'Este manual é o documento oficial de apoio aos usuários do Sankhya. Recomenda-se consultá-lo sempre que houver dúvidas sobre processos ou funcionalidades do sistema.'
+}
 
     const menu = document.getElementById('menu');
     const searchInput = document.getElementById('searchInput');
