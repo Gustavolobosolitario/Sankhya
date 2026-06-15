@@ -23,13 +23,9 @@
       --radius: 22px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -106,6 +102,13 @@
       display: block;
       font-size: 28px;
       font-weight: 800;
+    }
+
+    .hero-card small {
+      display: block;
+      margin-top: 8px;
+      color: #dbeafe;
+      line-height: 1.45;
     }
 
     main {
@@ -203,7 +206,7 @@
       text-align: left;
       cursor: pointer;
       box-shadow: 0 12px 28px rgba(15, 23, 42, .06);
-      transition: transform .18s ease, border .18s ease, box-shadow .18s ease;
+      transition: transform .18s ease, border .18s ease, box-shadow .18s ease, background .18s ease;
     }
 
     .flow-btn:hover {
@@ -246,6 +249,22 @@
       color: var(--muted);
       line-height: 1.45;
       font-size: 14px;
+    }
+
+    .status-line {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 900;
+      opacity: 0;
+      transition: .2s;
+    }
+
+    .flow-btn.done .status-line {
+      opacity: 1;
     }
 
     .content {
@@ -441,893 +460,12 @@
       cursor: pointer;
       background: var(--primary-2);
       color: #fff;
-    }
-
-    .action.secondary {
-      background: #e2e8f0;
-      color: #334155;
-    }
-
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      background: #0f172a;
-      color: #fff;
-      padding: 14px 18px;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(18px);
-      transition: .25s;
-      z-index: 10;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .empty {
-      background: #fff;
-      border: 1px dashed var(--border);
-      border-radius: 18px;
-      padding: 22px;
-      color: var(--muted);
-      text-align: center;
-      font-weight: 700;
-    }
-
-    @media (max-width: 900px) {
-      .hero,
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      main {
-        width: min(94vw, 1180px);
-      }
-
-      .menu-wrap {
-        position: static;
-      }
-
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .video-box iframe,
-      .video-box video {
-        height: 250px;
-      }
-    }
-
-    @media print {
-      header,
-      .toolbar,
-      .menu-wrap,
-      .footer-actions {
-        display: none;
-      }
-
-      main {
-        margin: 0;
-        width: 100%;
-      }
-
-      .layout {
-        display: block;
-      }
-
-      .content {
-        box-shadow: none;
-        border: 0;
-      }
-
-      .video-box {
-        display: none;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <section class="hero">
-      <div>
-        <h1>Central de Treinamento Sankhya</h1>
-        <p>
-          Página profissional para orientar usuários no passo a passo de solicitações, cotações, pedidos de compra e liberações no Sankhya, com vídeos explicativos por processo.
-        </p>
-      </div>
-
-      <div class="hero-card">
-        <strong>Fluxos disponíveis</strong>
-        <span id="totalFluxos">0 treinamentos</span>
-      </div>
-    </section>
-  </header>
-
-  <main>
-    <section class="toolbar">
-      <div class="search">
-        <input id="searchInput" type="text" placeholder="Pesquisar por solicitação, cotação, pedido, liberação, gestor, diretoria..." />
-      </div>
-      <div class="pill">Sankhya</div>
-      <div class="pill">Passo a passo</div>
-      <div class="pill">Vídeos explicativos</div>
-    </section>
-
-    <section class="layout">
-      <aside class="menu-wrap">
-        <h3 class="menu-title">Menu de treinamentos</h3>
-        <div class="menu" id="menu"></div>
-      </aside>
-
-      <section class="content" id="content">
-        <div class="content-head">
-          <div>
-            <h2 id="title"></h2>
-            <p id="subtitle"></p>
-          </div>
-          <span class="badge" id="badge"></span>
-        </div>
-
-        <div class="video-box">
-          <!-- Para vídeo do YouTube, use o formato: https://www.youtube.com/embed/ID_DO_VIDEO -->
-          <!-- Para vídeo local, use o caminho do arquivo, por exemplo: videos/solicitacao-sem-cotacao.mp4 -->
-          <iframe id="videoFrame" allowfullscreen title="Vídeo explicativo"></iframe>
-          <video id="videoLocal" controls></video>
-
-          <div class="video-placeholder" id="videoPlaceholder">
-            <div class="play">▶</div>
-            <h3>Vídeo explicativo do fluxo</h3>
-            <p>Substitua o campo <b>videoUrl</b> no JavaScript pelo link do vídeo deste treinamento.</p>
-          </div>
-        </div>
-
-        <div class="details">
-          <div class="info-grid">
-            <div class="info">
-              <small>Caminho de pesquisa</small>
-              <b id="path"></b>
-            </div>
-            <div class="info">
-              <small>Evento / Regra</small>
-              <b id="event"></b>
-            </div>
-            <div class="info">
-              <small>Perfil indicado</small>
-              <b id="profile"></b>
-            </div>
-          </div>
-
-          <h3 class="section-title">📌 Passo a passo</h3>
-          <div class="steps" id="steps"></div>
-
-          <div class="attention" id="attention"></div>
-
-          <div class="footer-actions">
-            <button class="action" onclick="markAsDone()">Marcar como estudado</button>
-            <button class="action secondary" onclick="window.print()">Imprimir passo a passo</button>
-          </div>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <div class="toast" id="toast">Treinamento marcado como estudado.</div>
-
-  <script>
-    const treinamentos = [
-      {
-        id: 'liberacao-solicitacao-sem-cotacao',
-        icon: '✅',
-        title: 'Liberação de Solicitação S/ Cotação',
-        subtitle: 'Aprovação de solicitações sem cotação vinculada, seguindo alçada e regra de limite.',
-        badge: 'Liberação',
-        path: 'Liberação de Limite',
-        event: 'Evento de liberação da solicitação',
-        profile: 'Gestores / Aprovadores',
-        videoUrl: '',
-        keywords: 'liberação de solicitação sem cotação liberacao solicitacao s cotacao aprovação gestor diretoria limite evento sankhya',
-        steps: [
-          ['Acesse o Sankhya', 'Entre com seu usuário e senha e confirme se possui perfil de aprovação.'],
-          ['Pesquise por Liberação de Limite', 'No campo de busca, digite Liberação de Limite e abra a rotina de aprovação.'],
-          ['Filtre as pendências', 'Utilize filtros como empresa, período, solicitante, número da solicitação, evento ou status pendente.'],
-          ['Analise os dados da solicitação', 'Confira item, quantidade, valor, centro de resultado, natureza, justificativa e necessidade da compra.'],
-          ['Valide a alçada de aprovação', 'Confirme se a aprovação está dentro da responsabilidade do gestor ou diretoria.'],
-          ['Aprove ou reprove', 'Se estiver correto, libere. Caso exista divergência, reprove ou solicite ajuste com observação clara.']
-        ],
-        attention: 'Atenção: a liberação deve considerar necessidade, orçamento, centro de resultado, justificativa e política interna de aprovação.'
-      },
-      {
-        id: 'pedido-compra-sem-cotacao',
-        icon: '📦',
-        title: 'Pedido de Compra S/ Cotação',
-        subtitle: 'Criação ou acompanhamento de pedido de compra sem processo formal de cotação.',
-        badge: 'Pedido S/ Cotação',
-        path: 'Portal de Compras',
-        event: 'Pedido de Compra sem cotação',
-        profile: 'Compras / Suprimentos',
-        videoUrl: '',
-        keywords: 'pedido de compra sem cotação pedido compra s cotacao portal de compras fornecedor sankhya',
-        steps: [
-          ['Acesse o Portal de Compras', 'Pesquise por Portal de Compras no Sankhya e abra a tela correspondente.'],
-          ['Inicie o pedido', 'Crie um novo pedido ou localize uma solicitação já aprovada para transformar em pedido.'],
-          ['Informe o fornecedor', 'Selecione o parceiro/fornecedor correto e valide CNPJ, condição de pagamento e dados comerciais.'],
-          ['Preencha os itens', 'Informe produto ou serviço, quantidade, unidade, valor, centro de resultado e natureza.'],
-          ['Revise as informações', 'Confira prazo de entrega, observação, impostos, totais, dados financeiros e rateios.'],
-          ['Salve e envie para aprovação', 'Finalize o pedido e acompanhe o fluxo de liberação conforme a política definida.']
-        ],
-        attention: 'Atenção: utilize este fluxo quando o pedido não passou por cotação. Garanta que a justificativa da compra esteja clara e aprovada.'
-      },
-      {
-        id: 'pedido-compra-com-cotacao',
-        icon: '💰',
-        title: 'Pedido de Compra C/ Cotação',
-        subtitle: 'Geração de pedido a partir de cotação negociada e fornecedor vencedor definido.',
-        badge: 'Pedido C/ Cotação',
-        path: 'Portal Mov. Internos / Cotação',
-        event: 'Pedido de Compra com cotação',
-        profile: 'Compras / Suprimentos',
-        videoUrl: '',
-        keywords: 'pedido de compra com cotação pedido compra c cotacao cotação fornecedor vencedor portal mov internos sankhya',
-        steps: [
-          ['Acesse a cotação', 'Abra o Portal Mov. Internos ou a rotina de cotação utilizada pela área de Compras.'],
-          ['Localize a cotação aprovada', 'Filtre pelo número da cotação, solicitação, fornecedor, período, comprador ou status.'],
-          ['Valide as propostas', 'Confira fornecedores participantes, valores, prazo de entrega, condição de pagamento e observações comerciais.'],
-          ['Selecione o fornecedor vencedor', 'Defina o fornecedor aprovado conforme melhor condição comercial e regra interna.'],
-          ['Gere o pedido de compra', 'Converta a cotação aprovada em pedido de compra, mantendo os dados negociados.'],
-          ['Revise e envie para aprovação', 'Confira totais, itens, impostos, centro de resultado, natureza e encaminhe para liberação.']
-        ],
-        attention: 'Atenção: antes de gerar o pedido, valide se a cotação está concluída e se o fornecedor vencedor foi definido corretamente.'
-      },
-      {
-        id: 'solicitacao-sem-cotacao',
-        icon: '🛒',
-        title: 'Solicitação S/ Cotação',
-        subtitle: 'Abertura de solicitação direta, sem necessidade de processo formal de cotação.',
-        badge: 'Solicitação S/ Cotação',
-        path: 'Portal de Compras',
-        event: 'Solicitação sem cotação',
-        profile: 'Solicitante / Área requisitante',
-        videoUrl: '',
-        keywords: 'solicitação sem cotação solicitacao s cotacao portal de compras solicitante compras sankhya',
-        steps: [
-          ['Acesse o Portal de Compras', 'No Sankhya, pesquise por Portal de Compras e abra a tela de solicitação.'],
-          ['Crie uma nova solicitação', 'Clique para incluir uma nova solicitação de compra conforme o processo da empresa.'],
-          ['Informe a necessidade', 'Descreva claramente o que precisa ser comprado e o motivo da solicitação.'],
-          ['Preencha os itens', 'Informe produto ou serviço, quantidade, unidade, centro de resultado, natureza e previsão de necessidade.'],
-          ['Revise os dados', 'Confira se obra, departamento, rateio, justificativa e observações estão corretos.'],
-          ['Salve e acompanhe aprovação', 'Após salvar, acompanhe a liberação da solicitação conforme alçada definida.']
-        ],
-        attention: 'Atenção: a justificativa deve ser objetiva e completa para evitar reprovação ou retrabalho no processo de aprovação.'
-      },
-      {
-        id: 'solicitacao-com-cotacao',
-        icon: '📋',
-        title: 'Solicitação C/ Cotação',
-        subtitle: 'Abertura de solicitação que seguirá para processo de cotação com fornecedores.',
-        badge: 'Solicitação C/ Cotação',
-        path: 'Portal Mov. Internos',
-        event: 'Solicitação com cotação',
-        profile: 'Solicitante / Compras',
-        videoUrl: '',
-        keywords: 'solicitação com cotação solicitacao c cotacao portal mov internos fornecedores sankhya',
-        steps: [
-          ['Acesse o Portal Mov. Internos', 'Pesquise por Portal Mov. Internos no Sankhya e abra a tela correspondente.'],
-          ['Inclua a solicitação', 'Crie uma nova solicitação informando a necessidade da área requisitante.'],
-          ['Preencha os dados principais', 'Informe empresa, centro de resultado, natureza, projeto/obra, item, quantidade e justificativa.'],
-          ['Encaminhe para cotação', 'Direcione o processo para Compras realizar a cotação com fornecedores.'],
-          ['Acompanhe o status', 'Verifique se a solicitação está aguardando cotação, aprovação, negociação ou geração de pedido.'],
-          ['Valide o retorno', 'Após a cotação, confira fornecedor selecionado, valores e condições antes do pedido.']
-        ],
-        attention: 'Atenção: este fluxo deve ser usado quando a compra precisa passar por comparação de propostas e negociação com fornecedores.'
-      },
-      {
-        id: 'cotacao',
-        icon: '📊',
-        title: 'Cotação',
-        subtitle: 'Processo de cotação, comparação de propostas e definição do fornecedor vencedor.',
-        badge: 'Cotação',
-        path: 'Portal Mov. Internos / Cotação',
-        event: 'Processo de cotação',
-        profile: 'Compras / Suprimentos',
-        videoUrl: '',
-        keywords: 'cotação cotacao fornecedores proposta negociação comprador portal mov internos sankhya',
-        steps: [
-          ['Acesse a rotina de cotação', 'Abra a tela utilizada para cotações no Sankhya, conforme o processo da área de Compras.'],
-          ['Localize a solicitação', 'Busque a solicitação que será cotada e confira os itens necessários.'],
-          ['Selecione fornecedores', 'Inclua os fornecedores que participarão do processo de cotação.'],
-          ['Registre as propostas', 'Informe valores, prazos, condições de pagamento, frete, impostos e observações comerciais.'],
-          ['Compare as condições', 'Analise o melhor custo-benefício considerando preço, prazo, qualidade e confiabilidade do fornecedor.'],
-          ['Defina o vencedor', 'Homologue o fornecedor escolhido e siga para geração do pedido de compra.']
-        ],
-        attention: 'Atenção: mantenha evidências da negociação e registre observações importantes para garantir rastreabilidade e governança.'
-      }
-    ];
-
-    const menu = document.getElementById('menu');
-    const searchInput = document.getElementById('searchInput');
-    const toast = document.getElementById('toast');
-    let currentId = treinamentos[0].id;
-
-    document.getElementById('totalFluxos').textContent = `${treinamentos.length} treinamentos`;
-
-    function renderMenu(lista = treinamentos) {
-      menu.innerHTML = '';
-
-      if (!lista.length) {
-        menu.innerHTML = '<div class="empty">Nenhum treinamento encontrado.</div>';
-        return;
-      }
-
-      lista.forEach(item => {
-        const btn = document.createElement('button');
-        btn.className = `flow-btn ${item.id === currentId ? 'active' : ''}`;
-        btn.onclick = () => selectTraining(item.id);
-        btn.innerHTML = `
-          <div class="flow-top">
-            <div class="icon">${item.icon}</div>
-            <div><h3>${item.title}</h3></div>
-          </div>
-          <p>${item.subtitle}</p>
-        `;
-        menu.appendChild(btn);
-      });
-    }
-
-    function selectTraining(id) {
-      currentId = id;
-      const item = treinamentos.find(t => t.id === id);
-
-      if (!item) return;
-
-      document.getElementById('title').textContent = item.title;
-      document.getElementById('subtitle').textContent = item.subtitle;
-      document.getElementById('badge').textContent = item.badge;
-      document.getElementById('path').textContent = item.path;
-      document.getElementById('event').textContent = item.event;
-      document.getElementById('profile').textContent = item.profile;
-      document.getElementById('attention').textContent = item.attention;
-
-      const steps = document.getElementById('steps');
-      steps.innerHTML = item.steps.map(step => `
-        <div class="step">
-          <div>
-            <h4>${step[0]}</h4>
-            <p>${step[1]}</p>
-          </div>
-        </div>
-      `).join('');
-
-      loadVideo(item.videoUrl);
-      renderMenu(filterTrainings(searchInput.value));
-    }
-
-    function convertYoutubeUrl(url) {
-      if (!url) return '';
-
-      if (url.includes('youtube.com/embed/')) return url;
-
-      if (url.includes('watch?v=')) {
-        const videoId = url.split('watch?v=')[1].split('&')[0];
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-
-      if (url.includes('youtu.be/')) {
-        const videoId = url.split('youtu.be/')[1].split('?')[0];
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-
-      return url;
-    }
-
-    function loadVideo(url) {
-      const iframe = document.getElementById('videoFrame');
-      const video = document.getElementById('videoLocal');
-      const placeholder = document.getElementById('videoPlaceholder');
-
-      iframe.style.display = 'none';
-      video.style.display = 'none';
-      placeholder.style.display = 'block';
-      iframe.src = '';
-      video.src = '';
-
-      if (!url) return;
-
-      const finalUrl = convertYoutubeUrl(url);
-
-      if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('vimeo.com')) {
-        iframe.src = finalUrl;
-        iframe.style.display = 'block';
-        placeholder.style.display = 'none';
-      } else {
-        video.src = finalUrl;
-        video.style.display = 'block';
-        placeholder.style.display = 'none';
-      }
-    }
-
-    function filterTrainings(term) {
-      const q = term.trim().toLowerCase();
-      if (!q) return treinamentos;
-
-      return treinamentos.filter(item =>
-        item.title.toLowerCase().includes(q) ||
-        item.subtitle.toLowerCase().includes(q) ||
-        item.badge.toLowerCase().includes(q) ||
-        item.path.toLowerCase().includes(q) ||
-        item.event.toLowerCase().includes(q) ||
-        item.profile.toLowerCase().includes(q) ||
-        item.keywords.toLowerCase().includes(q)
-      );
-    }
-
-    searchInput.addEventListener('input', () => {
-      const filtered = filterTrainings(searchInput.value);
-      renderMenu(filtered);
-    });
-
-    function markAsDone() {
-      const done = JSON.parse(localStorage.getItem('treinamentosSankhyaConcluidos') || '[]');
-
-      if (!done.includes(currentId)) {
-        done.push(currentId);
-      }
-
-      localStorage.setItem('treinamentosSankhyaConcluidos', JSON.stringify(done));
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2200);
-    }
-
-    selectTraining(currentId);
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Treinamento Sankhya | Solicitações, Cotações e Pedidos</title>
-
-  <style>
-    :root {
-      --bg: #f4f7fb;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --text: #172033;
-      --muted: #64748b;
-      --primary: #123c69;
-      --primary-2: #1f6feb;
-      --accent: #ffb703;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --warning: #f97316;
-      --border: #e2e8f0;
-      --shadow: 0 18px 45px rgba(15, 23, 42, .10);
-      --radius: 22px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Segoe UI, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(31, 111, 235, .12), transparent 34%),
-        linear-gradient(135deg, #f7faff 0%, #eef3f9 100%);
-      min-height: 100vh;
-    }
-
-    header {
-      padding: 34px 5vw 26px;
-      background: linear-gradient(135deg, #102a43, #123c69 48%, #0b2038);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    header::after {
-      content: "";
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      background: rgba(255, 183, 3, .16);
-      right: -120px;
-      top: -140px;
-    }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      max-width: 1180px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 1.5fr .9fr;
-      gap: 26px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: clamp(28px, 4vw, 48px);
-      letter-spacing: -1.2px;
-      line-height: 1.05;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #dbeafe;
-      font-size: 17px;
-      max-width: 760px;
-      line-height: 1.55;
-    }
-
-    .hero-card {
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      backdrop-filter: blur(14px);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: 0 20px 55px rgba(0,0,0,.18);
-    }
-
-    .hero-card strong {
-      display: block;
-      font-size: 14px;
-      color: #bfdbfe;
-      margin-bottom: 8px;
-    }
-
-    .hero-card span {
-      display: block;
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    main {
-      width: min(1180px, 90vw);
-      margin: -22px auto 50px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .toolbar {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
-
-    .search {
-      flex: 1 1 260px;
-      position: relative;
-    }
-
-    .search input {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--surface-soft);
-      border-radius: 15px;
-      padding: 14px 16px 14px 44px;
-      font-size: 15px;
-      outline: none;
       transition: .2s;
     }
 
-    .search input:focus {
-      border-color: var(--primary-2);
-      box-shadow: 0 0 0 4px rgba(31, 111, 235, .10);
-      background: #fff;
-    }
-
-    .search::before {
-      content: "🔎";
-      position: absolute;
-      left: 15px;
-      top: 12px;
-      opacity: .65;
-    }
-
-    .pill {
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 12px 14px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: .95fr 1.55fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .menu-wrap {
-      position: sticky;
-      top: 16px;
-    }
-
-    .menu-title {
-      margin: 0 0 12px;
-      font-size: 14px;
-      color: var(--muted);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .7px;
-    }
-
-    .menu {
-      display: grid;
-      gap: 14px;
-    }
-
-    .flow-btn {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 18px;
-      text-align: left;
-      cursor: pointer;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, .06);
-      transition: transform .18s ease, border .18s ease, box-shadow .18s ease;
-    }
-
-    .flow-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 38px rgba(15, 23, 42, .10);
-    }
-
-    .flow-btn.active {
-      border-color: rgba(31, 111, 235, .8);
-      box-shadow: 0 18px 42px rgba(31, 111, 235, .18);
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-    }
-
-    .flow-top {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      background: #eaf2ff;
-      color: var(--primary-2);
-      font-size: 22px;
-      flex: none;
-    }
-
-    .flow-btn h3 {
-      margin: 0;
-      font-size: 17px;
-    }
-
-    .flow-btn p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .content {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .content-head {
-      padding: 22px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .content-head h2 {
-      margin: 0;
-      font-size: 25px;
-      letter-spacing: -.5px;
-    }
-
-    .content-head p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .badge {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .video-box {
-      margin: 22px;
-      border-radius: 22px;
-      overflow: hidden;
-      background: #0f172a;
-      min-height: 315px;
-      display: grid;
-      place-items: center;
-      color: #e2e8f0;
-      position: relative;
-    }
-
-    .video-box iframe,
-    .video-box video {
-      width: 100%;
-      height: 360px;
-      border: 0;
-      display: none;
-      background: #000;
-    }
-
-    .video-placeholder {
-      text-align: center;
-      padding: 32px;
-    }
-
-    .play {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.16);
-      display: grid;
-      place-items: center;
-      margin: 0 auto 16px;
-      font-size: 30px;
-    }
-
-    .video-placeholder h3 {
-      margin: 0 0 8px;
-    }
-
-    .video-placeholder p {
-      margin: 0;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-
-    .details {
-      padding: 0 22px 24px;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .info {
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .info small {
-      display: block;
-      color: var(--muted);
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
-
-    .info b {
-      font-size: 15px;
-    }
-
-    .section-title {
-      margin: 12px 0 14px;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .steps {
-      display: grid;
-      gap: 12px;
-      counter-reset: step;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 12px;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      align-items: start;
-    }
-
-    .step::before {
-      counter-increment: step;
-      content: counter(step);
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      background: var(--primary);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
-
-    .step h4 {
-      margin: 0 0 4px;
-      font-size: 15px;
-    }
-
-    .step p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .attention {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 18px;
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      color: #9a3412;
-      line-height: 1.5;
-    }
-
-    .footer-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .action {
-      border: 0;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      background: var(--primary-2);
-      color: #fff;
+    .action:hover {
+      filter: brightness(.96);
+      transform: translateY(-1px);
     }
 
     .action.secondary {
@@ -1431,6 +569,7 @@
       <div class="hero-card">
         <strong>Fluxos disponíveis</strong>
         <span id="totalFluxos">0 treinamentos</span>
+        <small id="totalConcluidos">0 concluídos</small>
       </div>
     </section>
   </header>
@@ -1461,9 +600,18 @@
         </div>
 
         <div class="video-box">
-          <!-- Para vídeo do YouTube, use o formato: https://www.youtube.com/embed/ID_DO_VIDEO -->
-          <!-- Para vídeo local, use o caminho do arquivo, por exemplo: videos/solicitacao-sem-cotacao.mp4 -->
-          <iframe id="videoFrame" allowfullscreen title="Vídeo explicativo"></iframe>
+          <!-- Para vídeo do YouTube, use qualquer formato:
+               https://youtu.be/ID_DO_VIDEO
+               https://www.youtube.com/watch?v=ID_DO_VIDEO
+               https://www.youtube.com/embed/ID_DO_VIDEO
+               Para vídeo local, use: videos/nome-do-video.mp4 -->
+          <iframe
+            id="videoFrame"
+            title="Vídeo explicativo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+
           <video id="videoLocal" controls></video>
 
           <div class="video-placeholder" id="videoPlaceholder">
@@ -1495,8 +643,8 @@
           <div class="attention" id="attention"></div>
 
           <div class="footer-actions">
-            <button class="action" onclick="markAsDone()">Marcar como estudado</button>
-            <button class="action secondary" onclick="window.print()">Imprimir passo a passo</button>
+            <button class="action" type="button" onclick="markAsDone()">Marcar como estudado</button>
+            <button class="action secondary" type="button" onclick="window.print()">Imprimir passo a passo</button>
           </div>
         </div>
       </section>
@@ -1638,11 +786,34 @@
     const menu = document.getElementById('menu');
     const searchInput = document.getElementById('searchInput');
     const toast = document.getElementById('toast');
-    let currentId = treinamentos[0].id;
+    const totalFluxos = document.getElementById('totalFluxos');
+    const totalConcluidos = document.getElementById('totalConcluidos');
 
-    document.getElementById('totalFluxos').textContent = `${treinamentos.length} treinamentos`;
+    let currentId = treinamentos[0]?.id || '';
+
+    function getDoneList() {
+      try {
+        return JSON.parse(localStorage.getItem('treinamentosSankhyaConcluidos') || '[]');
+      } catch (error) {
+        localStorage.removeItem('treinamentosSankhyaConcluidos');
+        return [];
+      }
+    }
+
+    function updateCounters() {
+      const done = getDoneList();
+      totalFluxos.textContent = `${treinamentos.length} treinamentos`;
+      totalConcluidos.textContent = `${done.length} concluídos`;
+    }
+
+    function sanitize(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
 
     function renderMenu(lista = treinamentos) {
+      const done = getDoneList();
       menu.innerHTML = '';
 
       if (!lista.length) {
@@ -1652,24 +823,29 @@
 
       lista.forEach(item => {
         const btn = document.createElement('button');
-        btn.className = `flow-btn ${item.id === currentId ? 'active' : ''}`;
+        const isDone = done.includes(item.id);
+
+        btn.type = 'button';
+        btn.className = `flow-btn ${item.id === currentId ? 'active' : ''} ${isDone ? 'done' : ''}`;
         btn.onclick = () => selectTraining(item.id);
         btn.innerHTML = `
           <div class="flow-top">
-            <div class="icon">${item.icon}</div>
-            <div><h3>${item.title}</h3></div>
+            <div class="icon">${sanitize(item.icon)}</div>
+            <div><h3>${sanitize(item.title)}</h3></div>
           </div>
-          <p>${item.subtitle}</p>
+          <p>${sanitize(item.subtitle)}</p>
+          <div class="status-line">✓ Treinamento estudado</div>
         `;
+
         menu.appendChild(btn);
       });
     }
 
     function selectTraining(id) {
-      currentId = id;
       const item = treinamentos.find(t => t.id === id);
-
       if (!item) return;
+
+      currentId = id;
 
       document.getElementById('title').textContent = item.title;
       document.getElementById('subtitle').textContent = item.subtitle;
@@ -1683,32 +859,41 @@
       steps.innerHTML = item.steps.map(step => `
         <div class="step">
           <div>
-            <h4>${step[0]}</h4>
-            <p>${step[1]}</p>
+            <h4>${sanitize(step[0])}</h4>
+            <p>${sanitize(step[1])}</p>
           </div>
         </div>
       `).join('');
 
       loadVideo(item.videoUrl);
       renderMenu(filterTrainings(searchInput.value));
+      updateCounters();
     }
 
     function convertYoutubeUrl(url) {
       if (!url) return '';
 
-      if (url.includes('youtube.com/embed/')) return url;
+      try {
+        const parsedUrl = new URL(url);
 
-      if (url.includes('watch?v=')) {
-        const videoId = url.split('watch?v=')[1].split('&')[0];
-        return `https://www.youtube.com/embed/${videoId}`;
+        if (parsedUrl.hostname.includes('youtube.com') && parsedUrl.pathname.startsWith('/embed/')) {
+          return url;
+        }
+
+        if (parsedUrl.hostname.includes('youtube.com')) {
+          const videoId = parsedUrl.searchParams.get('v');
+          return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+        }
+
+        if (parsedUrl.hostname.includes('youtu.be')) {
+          const videoId = parsedUrl.pathname.replace('/', '').split('?')[0];
+          return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+        }
+
+        return url;
+      } catch (error) {
+        return url;
       }
-
-      if (url.includes('youtu.be/')) {
-        const videoId = url.split('youtu.be/')[1].split('?')[0];
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-
-      return url;
     }
 
     function loadVideo(url) {
@@ -1720,19 +905,31 @@
       video.style.display = 'none';
       placeholder.style.display = 'block';
       iframe.src = '';
-      video.src = '';
+      video.removeAttribute('src');
+      video.load();
 
       if (!url) return;
 
       const finalUrl = convertYoutubeUrl(url);
 
-      if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('vimeo.com')) {
+      if (
+        finalUrl.includes('youtube.com/embed/') ||
+        finalUrl.includes('player.vimeo.com')
+      ) {
         iframe.src = finalUrl;
         iframe.style.display = 'block';
         placeholder.style.display = 'none';
-      } else {
+      } else if (
+        finalUrl.endsWith('.mp4') ||
+        finalUrl.endsWith('.webm') ||
+        finalUrl.endsWith('.ogg')
+      ) {
         video.src = finalUrl;
         video.style.display = 'block';
+        placeholder.style.display = 'none';
+      } else {
+        iframe.src = finalUrl;
+        iframe.style.display = 'block';
         placeholder.style.display = 'none';
       }
     }
@@ -1758,7 +955,7 @@
     });
 
     function markAsDone() {
-      const done = JSON.parse(localStorage.getItem('treinamentosSankhyaConcluidos') || '[]');
+      const done = getDoneList();
 
       if (!done.includes(currentId)) {
         done.push(currentId);
@@ -1766,9 +963,14 @@
 
       localStorage.setItem('treinamentosSankhyaConcluidos', JSON.stringify(done));
       toast.classList.add('show');
+
       setTimeout(() => toast.classList.remove('show'), 2200);
+
+      renderMenu(filterTrainings(searchInput.value));
+      updateCounters();
     }
 
+    updateCounters();
     selectTraining(currentId);
   </script>
 </body>
